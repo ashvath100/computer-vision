@@ -45,8 +45,6 @@ def get_images(image_dir, size_dim=(228,228)):
     print("Total Number of images read %d" %(count))
     return(np.asrray(data), count)
 
-
-
 """## Formatting the Input"""
 
 train_datagen = ImageDataGenerator(rotation_range=30, width_shift_range=0.2, height_shift_range=0.2,
@@ -60,26 +58,6 @@ test_datagen = ImageDataGenerator(rescale=1./255, dtype='float32')
 # test_datagen.flow_from_directory(directory='test_dir', target_size=(228,228), color_mode='rgb', classes=None)
 
 train_datagen.flow(x, y, batch_size=32, shuffle=True)
-
-"""## Checking the DataFrame
-
-- External ID contains the images names 
-- Label contains the label
-
-- Sort by the external ID
-- Put the corresponding label.
-"""
-
-df = pd.read_csv('/content/2018_p1.csv')
-
-df.head()
-
-# labeled_data = df['Labeled Data']
-# label = df['Label']
-
-df2 = df.sort_values(by='External ID', ascending=True,inplace=False)
-
-df2['External ID']
 
 """## Object Detection Model"""
 
@@ -111,4 +89,3 @@ cordinates = layers.Dense(4, use_bias='False') (x)
 regressor = Model(inputs=input_shape, outputs=cordinates)
 
 regressor.summary()
-
