@@ -97,7 +97,7 @@ df = fill_class_id(df)
 column_resized = ['x1', 'x2', 'x3', 'x4', 'y1', 'y1', 'y3', 'y4', 'x_min', 'x_max', 'y_min', 'y_max']
 df = resize_column(df, column_resized)
 
-df.tail(3)
+df.head(3)
 
 """# Testing an Image with cordinates
 
@@ -143,4 +143,78 @@ img = cv2.imread('/content/2018_VID_1_3_frame325.jpg')
 img = cv2.resize(img, (416, 416))
 img = cv2.circle(img, (100, 250), 5, (0,0,255), 8)
 plt.imshow(img[...,::-1])
+
+"""1 2 Case"""
+
+img = cv2.imread('/content/2018_VID_1_3_frame854.jpg')
+print(img.shape)
+
+img = cv2.circle(img, (290, 636), 5, (0,0,255), 8)
+plt.imshow(img[...,::-1])
+plt.show()
+
+"""Another 4 cord case"""
+
+img = cv2.imread('/content/2018_VID_1_3_frame373.jpg')
+print(img.shape)
+img = cv2.circle(img, (333, 469), 5, (0,0,255), 8)
+plt.imshow(img[...,::-1])
+plt.show()
+
+img = cv2.circle(img, (331, 130), 5, (0,0,255), 8)
+plt.imshow(img[...,::-1])
+plt.show()
+
+# 650 	149.714 	633.143 	454.857 	
+img = cv2.circle(img, (650, 149), 5, (0,0,255), 8)
+plt.imshow(img[...,::-1])
+plt.show()
+
+img = cv2.circle(img, (633, 454), 5, (0,0,255), 8)
+plt.imshow(img[...,::-1])
+plt.show()
+
+"""Vauge Case
+
+733.779 	716.998 	803.659 	39.890 	1220.526 	184.468 	1109.683 	704.950
+"""
+
+img = cv2.imread('/content/2018_VID_1_3_frame116.jpg')
+print(img.shape)
+img = cv2.circle(img, (733, 716), 5, (0,0,255), 8)
+plt.imshow(img[...,::-1])
+plt.show()
+
+img = cv2.circle(img, (803, 39), 5, (0,0,255), 8)
+plt.imshow(img[...,::-1])
+plt.show()
+
+img = cv2.circle(img, (1220, 184), 5, (0,0,255), 8)
+plt.imshow(img[...,::-1])
+plt.show()
+
+"""This is confirmed 1-2, 1-2 case checked from labelbox"""
+
+img = cv2.imread('/content/2018_VID_1_3_frame867.jpg')
+print(img.shape)
+
+for i in range(len(df)):
+    if(df['External ID'][i] == '2018_VID_1_3_frame867.jpg'):
+        print(df['x1'][i], df['y1'][i], df['x2'][i], df['y2'][i], df['x3'][i], df['y3'][i], df['x4'][i], df['y4'][i])
+
+img = cv2.circle(img, (37, 556), 5, (0,0,255), 8)
+plt.imshow(img[...,::-1])
+plt.show()
+
+img = cv2.circle(img, (6, 424), 5, (0,0,255), 8)
+plt.imshow(img[...,::-1])
+plt.show()
+
+img = cv2.circle(img, (286, 642), 5, (0,0,255), 8)
+plt.imshow(img[...,::-1])
+plt.show()
+
+img = cv2.circle(img, (266, 178), 5, (0,0,255), 8)
+plt.imshow(img[...,::-1])
+plt.show()
 
