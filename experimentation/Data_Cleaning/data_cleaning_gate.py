@@ -298,6 +298,7 @@ df['y4'] = np.array(y_4t)
 
 # Changes made again on 10/01 after bug in 1-2 1-2 case
 # Trying to Incorporate that 
+# Handled the bottom left, right with current edit. It should look odd
 labels = df["Label"]
 label_df = pd.DataFrame()
 label_list = []
@@ -377,15 +378,19 @@ for row in range(len(df)):
             elif(len(gate_lines) == 2):
                 ele_list1 = gate_lines[0]
                 ele_list2 = gate_lines[1]
+                
                 x_1t.append(ele_list1[0]['x'])
                 y_1t.append(ele_list1[0]['y'])
+                
                 x_2t.append(ele_list1[1]['x'])
                 y_2t.append(ele_list1[1]['y'])
 
-                x_3t.append(ele_list2[0]['x'])
-                y_3t.append(ele_list2[0]['y'])
-                x_4t.append(ele_list2[1]['x'])
-                y_4t.append(ele_list2[1]['y'])
+                ##### With the edit #########
+                x_3t.append(ele_list2[1]['x'])
+                y_3t.append(ele_list2[1]['y'])
+                
+                x_4t.append(ele_list2[0]['x'])
+                y_4t.append(ele_list2[0]['y'])
                 
                     # print(ele_list)
         # else:
@@ -449,5 +454,5 @@ df['y4'] = np.array(y_4t)
 
 df.head()
 
-df.to_csv('Data_cleaned_fixed.csv', index=True)
+df.to_csv('Data_cleaned_fixed_final.csv', index=True)
 

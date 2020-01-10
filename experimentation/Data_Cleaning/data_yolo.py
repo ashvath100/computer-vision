@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 import cv2
 import os
 
-df = pd.read_csv(r'/content/drive/My Drive/VAUV Dataset/json_csv/data_cleaned_2018_1.csv')
+df = pd.read_csv(r'/content/drive/My Drive/VAUV Dataset/json_csv/fixed_data_cleaned_2018_1.csv')
 image_dir = r'/content/drive/My Drive/VAUV Dataset/Clipped Images/2018_VID_1_3'
 
 df.head(2)
@@ -186,6 +186,10 @@ plt.imshow(img[...,::-1])
 plt.show()
 
 img = cv2.circle(img, (803, 39), 5, (0,0,255), 8)
+plt.imshow(img[...,::-1])
+plt.show()
+
+img = cv2.circle(img, (1109, 704), 5, (0,0,255), 8)
 plt.imshow(img[...,::-1])
 plt.show()
 
