@@ -12,16 +12,19 @@ Original file is located at
 """
 
 from google.colab import drive
-
 drive.mount('/content/drive')
 
 """# Cleaning the CSV"""
 
 import pandas as pd
 import numpy as np
+from copy import deepcopy
+import warnings
 import matplotlib.pyplot as plt
 import cv2
 import os
+
+warnings.filterwarnings('ignore')
 
 df = pd.read_csv(r'/content/drive/My Drive/VAUV Dataset/json_csv/fixed_final_data_cleaned.csv')
 image_dir = r'/content/drive/My Drive/VAUV Dataset/Clipped Images/2018_VID_1_3'
@@ -103,7 +106,7 @@ df = fill_class_id(df)
 column_resized = ['x1', 'x2', 'x3', 'x4', 'y1', 'y2', 'y3', 'y4', 'x_min', 'y_min', 'x_max', 'y_max']
 df = resize_column(df, column_resized)
 
-df.head(3)
+df.head()
 
 """# Testing an Image with cordinates
 
@@ -284,7 +287,7 @@ plt.imshow(img_resized[...,::-1])
 img_resized = cv2.circle(img_resized, (80, 110), 5, (0,255,255), 8)
 plt.imshow(img_resized[...,::-1])
 
-"""# 12 12 Case"""
+"""## 12 12 Case"""
 
 img = cv2.imread('/content/2018_VID_1_3_frame867.jpg')
 print(img.shape)
@@ -333,3 +336,31 @@ plt.show()
 img = cv2.circle(img_resized, (93, 371), 5, (0,255,255), 8)
 plt.imshow(img[...,::-1])
 plt.show()
+
+"""# Saving the final DataFame"""
+
+df_final = deepcopy(df)
+
+for col in df.columns:
+    print(col)
+
+# Remove 1-2 Case.
+# This also removes the no gate case.
+# We have cases with 1-2 1-2 and 1234 gate labelled scenarios
+
+df_final = df_final[(df['x3'] > 0) & df['y3'] > 0]
+
+df_final.head()
+
+df_final_neg = deepcopy(df)
+
+df_final_neg = df_final_neg[(df['x1'] == 0) & (df['y1'] == 0)]
+
+df_final_neg['class_id'] = 0
+
+df_final_neg.head()
+
+df_final.to_csv('Final_Cleaned_YOLO.csv')
+
+df_final_neg.to_csv('Final_Neg_Cleaned_YOLO.csv')
+
