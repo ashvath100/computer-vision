@@ -9,12 +9,17 @@ Original file is located at
 # Mount Drive
 """
 
+!pip install keras==2.1.5
+!pip install tensorflow==1.6.0
+
 import pandas as pd
 import numpy as np
 import cv2
 
 from google.colab import drive
 drive.mount('/content/drive')
+
+! sed 's/,/ /' /content/annotation_pos.txt
 
 """# Clone YOLO V3"""
 
@@ -39,11 +44,20 @@ from keras.callbacks import TensorBoard, ModelCheckpoint, ReduceLROnPlateau, Ear
 from yolo3.model import preprocess_true_boxes, yolo_body, tiny_yolo_body, yolo_loss
 from yolo3.utils import get_random_data
 
+# Commented out IPython magic to ensure Python compatibility.
+# %cd '/content/drive/My Drive/VAUV Dataset/Clipped Images/2018_VID_1_3'
+!pwd
+
+# Commented out IPython magic to ensure Python compatibility.
+# %cd '/content'
+
+! sed 's/,/ /' final_annotation_pos.txt
+
 def _main():
-    annotation_path = 'train.txt'
-    log_dir = '/content/drive/My Drive/VAUV Dataset/YOLO_logs'     # Changed for drive
-    classes_path = 'model_data/voc_classes.txt'
-    anchors_path = 'model_data/yolo_anchors.txt'
+    annotation_path = '/content/final_annotation_pos.txt'
+    log_dir = '/content/drive/My Drive/VAUV Dataset/YOLO_logs/'     # Changed for drive
+    classes_path = '/content/keras-yolo3/model_data/voc_classes.txt'
+    anchors_path = '/content/keras-yolo3/model_data/yolo_anchors.txt'
     class_names = get_classes(classes_path)
     num_classes = len(class_names)
     anchors = get_anchors(anchors_path)
@@ -53,10 +67,10 @@ def _main():
     is_tiny_version = len(anchors)==6 # default setting
     if is_tiny_version:
         model = create_tiny_model(input_shape, anchors, num_classes,
-            freeze_body=2, weights_path='model_data/tiny_yolo_weights.h5')
+            freeze_body=2, weights_path='/content/keras-yolo3/model_data/yolo.h5')
     else:
         model = create_model(input_shape, anchors, num_classes,
-            freeze_body=2, weights_path='model_data/yolo_weights.h5') # make sure you know what you freeze
+            freeze_body=2, weights_path='/content/keras-yolo3/model_data/yolo.h5') # make sure you know what you freeze
 
     logging = TensorBoard(log_dir=log_dir)
     checkpoint = ModelCheckpoint(log_dir + 'ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5',
@@ -129,7 +143,7 @@ def get_anchors(anchors_path):
 
 
 def create_model(input_shape, anchors, num_classes, load_pretrained=True, freeze_body=2,
-            weights_path='model_data/yolo_weights.h5'):
+            weights_path='/content/keras-yolo3/model_data/yolo.h5'):
     '''create the training model'''
     K.clear_session() # get a new session
     image_input = Input(shape=(None, None, 3))
@@ -159,7 +173,7 @@ def create_model(input_shape, anchors, num_classes, load_pretrained=True, freeze
     return model
 
 def create_tiny_model(input_shape, anchors, num_classes, load_pretrained=True, freeze_body=2,
-            weights_path='model_data/tiny_yolo_weights.h5'):
+            weights_path='/content/keras-yolo3/model_data/yolo.h5'):
     '''create the training model, for Tiny YOLOv3'''
     K.clear_session() # get a new session
     image_input = Input(shape=(None, None, 3))
@@ -215,3 +229,9 @@ def data_generator_wrapper(annotation_lines, batch_size, input_shape, anchors, n
 if __name__ == '__main__':
     _main()
 
+model_json = model.to_json()
+with open("model.
+json", "w") as json_file:
+    json_file.write(model_json)
+
+model =

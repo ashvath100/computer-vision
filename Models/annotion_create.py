@@ -12,8 +12,8 @@ Original file is located at
 import pandas as pd
 from copy import deepcopy
 
-pos = pd.read_csv('/Final_Cleaned_YOLO.csv')
-neg = pd.read_csv('/Final_Neg_Cleaned_YOLO.csv')
+pos = pd.read_csv('Final_Cleaned_YOLO.csv')
+neg = pd.read_csv('Final_Neg_Cleaned_YOLO.csv')
 
 pos_totxt = deepcopy(pos)
 neg_totxt = deepcopy(neg)
@@ -42,9 +42,11 @@ pos_totxt['class_id'] = sed
 
 pos_totxt.head()
 
-pos_totxt.to_csv(r'annotation.txt', header=None, index=None, sep=' ', mode='a')
+pos_totxt.to_csv(r'annotation.txt', header=None, index=None, sep=',', mode='a')
 
-def create_annotation(df, name):
+def create_annotation_pos(df, name):
+    # df['External ID'] = '/content/drive/My Drive/VAUV Dataset/Clipped Images/2018_VID_1_3/' + df['External ID'].astype('str')
+
     df.drop(['Unnamed: 0', 'Unnamed: 0.1', 'ID', 'DataRow ID', 'Labeled Data',
        'Label', 'Created By', 'Project Name', 'Created At', 'Updated At',
        'Seconds to Label', 'Agreement', 'Benchmark Agreement',
@@ -54,13 +56,36 @@ def create_annotation(df, name):
        'x3_resized', 'x4_resized', 'y1_resized', 'y2_resized', 'y3_resized',
        'y4_resized'], axis=1, inplace=True)
     
+    df['x_min_resized'] = df['x_min_resized'].astype('int')
+    df['y_min_resized'] = df['x_min_resized'].astype('int')
+    df['x_max_resized'] = df['x_min_resized'].astype('int')
+    df['y_max_resized'] = df['x_min_resized'].astype('int')
+    
     sed = pd.Series(df['class_id'])
     df.drop('class_id',axis=1, inplace=True)
     df['class_id'] = sed
     df.head()
-    df.to_csv(f'{name}.txt', header=None, index=None, sep=' ', mode='a')
+    df.to_csv(f'{name}.txt', header=None, index=None, sep=',', mode='a')
 
-create_annotation(pos_totxt,'annotation_pos')
+def create_annotation_neg(df, name):
+    # df['External ID'] = '/content/drive/My Drive/VAUV Dataset/Clipped Images/2018_VID_1_3/' + df['External ID'].astype('str')
+    df.drop(['Unnamed: 0', 'Unnamed: 0.1', 'ID', 'DataRow ID', 'Labeled Data',
+       'Label', 'Created By', 'Project Name', 'Created At', 'Updated At',
+       'Seconds to Label', 'Agreement', 'Benchmark Agreement',
+       'Benchmark ID', 'Benchmark Reference ID', 'Dataset Name', 'Reviews',
+       'View Label','x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4','x_min',
+       'y_min', 'x_max', 'y_max','x1_resized', 'x2_resized',
+       'x3_resized', 'x4_resized', 'y1_resized', 'y2_resized', 'y3_resized',
+       'y4_resized', 'class_id', 'x_min_resized', 'y_min_resized', 'x_max_resized', 'y_max_resized'], axis=1, inplace=True)
+    
+    # sed = pd.Series(df['class_id'])
+    # df.drop('class_id',axis=1, inplace=True)
+    # df['class_id'] = sed
+    df.head()
+    df.to_csv(f'{name}.txt', header=None, index=None, sep=',', mode='a')
 
-create_annotation(neg_totxt,'annotation_neg')
+create_annotation_pos(pos_totxt,'annotation_pos')
 
+create_annotation_neg(neg_totxt,'annotation_neg')
+
+! sed 's/,/ /'
